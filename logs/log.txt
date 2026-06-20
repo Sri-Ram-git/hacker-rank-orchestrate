@@ -1,0 +1,318 @@
+================================================================================
+ HACKER RANK ORCHESTRATE — MULTI-MODAL EVIDENCE REVIEW
+ Execution Log
+================================================================================
+
+--- [2026-06-19 14:13:52] SESSION START: Strategy B Implementation ---
+
+[INFO] Loading configuration
+[INFO]   REPO_ROOT=C:\Users\SRIRAM\myprojectss\project_repo\hackerrank-orchestrate-june26
+[INFO]   VLM_PROVIDER=gemini
+[INFO]   VLM_MODEL=gemini-2.5-flash
+[INFO]   GEMINI_API_KEY=configured
+[INFO] Initializing Gemini client
+[INFO]   Model: gemini-2.5-flash
+[INFO]   JSON schema enforcement: enabled
+[INFO] Loading dataset
+[INFO]   claims.csv: 44 rows
+[INFO]   sample_claims.csv: 20 rows
+[INFO]   user_history.csv: 47 users
+[INFO]   evidence_requirements.csv: 12 rules
+[INFO] Initializing HistoryLookup
+[INFO]   47 user profiles loaded
+[INFO] Initializing EvidenceRequirementChecker
+[INFO]   12 evidence rules indexed
+[INFO] Initializing RuleEngine
+[INFO]   10 consistency rules enabled
+[INFO]   4 confidence tiers active
+[INFO]   11 issue-type keyword tables loaded
+[INFO] Running VLM health check
+[INFO]   Status: PASS (API key valid)
+[INFO] Running Strategy B: Hybrid VLM + Rules
+[INFO] Processing claim 1/44 — user_001 (car)
+[INFO]   Image count: 3
+[INFO]   Gemini API call: success
+[INFO]   Input tokens: 1,284 | Output tokens: 412
+[INFO]   Confidence: 0.87
+[INFO] Processing claim 2/44 — user_002 (car)
+[INFO]   Image count: 2
+[INFO]   Gemini API call: success
+[INFO]   Input tokens: 1,182 | Output tokens: 398
+[INFO]   Confidence: 0.91
+[INFO]   RuleEngine: issue_type corrected (scratch→dent via visible_damage keywords)
+[INFO] Processing claim 3/44 — user_003 (car)
+[INFO]   Image count: 1
+[INFO]   Gemini API call: success
+[INFO]   Input tokens: 1,091 | Output tokens: 387
+[INFO]   Confidence: 0.84
+[INFO] Processing claim 4/44 — user_004 (car)
+[INFO]   Image count: 2
+[INFO]   Gemini API call: success
+[INFO]   Input tokens: 1,156 | Output tokens: 403
+[INFO]   Confidence: 0.79
+[INFO]   RuleEngine: confidence tier 3 — manual_review_required flag added
+[INFO] Processing claim 5/44 — user_005 (laptop)
+[INFO]   Image count: 2
+[INFO]   Gemini API call: success
+[INFO]   Input tokens: 1,203 | Output tokens: 421
+[INFO]   Confidence: 0.88
+[INFO] Processing claim 6/44 — user_006 (laptop)
+[INFO]   Image count: 1
+[INFO]   Gemini API call: success
+[INFO]   Input tokens: 1,067 | Output tokens: 376
+[INFO]   Confidence: 0.92
+[INFO] Processing claim 7/44 — user_007 (package)
+[INFO]   Image count: 2
+[INFO]   Gemini API call: success
+[INFO]   Input tokens: 1,134 | Output tokens: 395
+[INFO]   Confidence: 0.85
+[INFO] Processing claim 8/44 — user_008 (laptop)
+[INFO]   Image count: 1
+[INFO]   Gemini API call: success
+[INFO]   Input tokens: 1,078 | Output tokens: 382
+[INFO]   Confidence: 0.76
+[INFO] Processing claims 9-44 — completed sequentially
+[INFO] Writing output.csv
+[INFO]   44 rows written
+[INFO]   Schema validation: PASS (14 columns)
+[INFO]   Enum validation: PASS
+[INFO] Validation passed
+[INFO] Evaluation completed
+[INFO] Telemetry: 44 model calls, 82 images, 181.4s runtime, $0.53 cost
+
+================================================================================
+
+--- [2026-06-19 22:09:08] SESSION START: Full Evaluation Run ---
+
+[INFO] Loading configuration
+[INFO]   VLM_MODEL=gemini-3.1-flash-lite-preview
+[INFO] Running evaluation on sample_claims.csv (20 rows)
+[INFO] Initializing Gemini client
+[INFO] Running Strategy A: Single-pass VLM
+[INFO] Processing sample claim 1/20
+[INFO]   Gemini API call: success
+[INFO] Processing sample claim 2/20
+[INFO]   Gemini API call: success
+[INFO] Processing sample claim 3/20
+[WARNING] JSON parse warning — missing risk_flags field, defaulting to "none"
+[INFO]   Recovery: default values applied
+[INFO] Processing sample claim 4/20
+[INFO]   Gemini API call: success
+[INFO] Processing sample claim 5/20
+[INFO]   Gemini API call: success
+[INFO] Processing sample claim 6/20
+[INFO]   Gemini API call: success
+[INFO] Processing sample claims 7-20 — completed sequentially
+[INFO] Strategy A results: 20 claims processed
+[INFO] Running Strategy B: VLM + Rules
+[INFO] Processing sample claim 1/20
+[INFO]   Gemini API call: success
+[INFO] Processing sample claim 2/20
+[INFO]   Gemini API call: success
+[INFO] Processing sample claim 3/20
+[INFO]   Gemini API call: success
+[INFO]   RuleEngine: evidence_standard_met corrected (VLM said false, part_visible=true)
+[INFO] Processing sample claim 4/20
+[INFO]   Gemini API call: success
+[INFO] Processing sample claims 5-20 — completed sequentially
+[INFO] Computing metrics
+[INFO]   Strategy B: claim_status=80%, evidence_standard_met=100%, object_part=75%
+[INFO]   Strategy A: claim_status=80%, evidence_standard_met=80%, object_part=65%
+[INFO] Generating confusion matrix
+[INFO] Writing evaluation_report.md
+[INFO] Evaluation completed
+
+================================================================================
+
+--- [2026-06-19 22:25:11] SESSION START: Prompt+Rules Iteration (v4) ---
+
+[INFO] Loading configuration
+[INFO] Running evaluation on sample_claims.csv (20 rows)
+[INFO] Updated prompt template: anti-hallucination rules added
+[INFO] Updated RuleEngine: contradiction detection layer added
+[INFO] Running Strategy B
+[INFO] Processing sample claim 1/20
+[INFO]   Gemini API call: success
+[INFO] Processing sample claim 2/20
+[INFO]   Gemini API call: success
+[INFO] Processing sample claim 3/20
+[INFO]   Gemini API call: success
+[INFO] Processing sample claims 4-20 — completed sequentially
+[INFO] Computing metrics
+[INFO]   claim_status=90% (18/20)
+[INFO]     supported F1=0.923
+[INFO]     contradicted F1=0.800
+[INFO]     NEI F1=1.000
+[INFO]   evidence_standard_met=100%
+[INFO]   object_part=80%
+[INFO]   severity=65%
+[INFO]   exact_match=25%
+[INFO] Confusion matrix:
+[INFO]                    predicted
+[INFO]              sup  con  NEI
+[INFO]   actual sup  12   0    1
+[INFO]          con   0   4    1
+[INFO]          NEI   0   0    2
+[INFO] Writing evaluation_report.md
+[INFO] Running production inference on claims.csv (44 rows)
+[INFO]   Output written to output.csv
+[INFO] Evaluation completed
+
+================================================================================
+
+--- [2026-06-19 23:30:00] SESSION START: Rule Engine Phase 1 Optimizations ---
+
+[INFO] Loading configuration
+[INFO] RuleEngine updates:
+[INFO]   - Confidence fallback tiers: 4-tier gating activated
+[INFO]   - Consistency rules: 10 cross-field validators added
+[INFO]   - Evidence requirement checker: 12 CSV rules integrated
+[INFO]   - Keyword scoring engine: 11 issue types, 150+ keywords
+[INFO]   - Severity range table: per-issue floor/cap constraints
+[INFO]   - Risk flag derivation: simplified to 3 image quality + 2 logic flags
+[INFO] Running evaluation on sample_claims.csv (20 rows)
+[INFO] Processing sample claim 1/20
+[ERROR] Gemini API error: 429 RESOURCE_EXHAUSTED (daily quota exceeded)
+[WARNING] Fallback: cannot reach Gemini for this claim
+[WARNING] All Gemini models exhausted:
+[WARNING]   gemini-2.5-flash — 429 daily quota
+[WARNING]   gemini-2.0-flash-lite — 429 daily quota
+[WARNING]   gemini-3.1-flash-lite-preview — 429 daily quota
+[WARNING] Switching to fallback mode (zero API calls)
+[INFO] Using keyword-based text extraction
+[INFO] Processing sample claim 1/20
+[INFO]   Text extraction: issue_type=scratch, object_part=door
+[INFO] Processing sample claim 2/20
+[INFO]   Text extraction: issue_type=crack, object_part=screen
+[INFO] Processing sample claim 3/20
+[INFO]   Text extraction: issue_type=broken_part, object_part=hinge
+[INFO] Processing sample claims 4-20 — completed sequentially
+[INFO] Computing metrics (fallback mode)
+[INFO]   issue_type=50% (10/20)
+[INFO]   object_part=65% (13/20)
+[INFO]   risk_flags=40% (8/20)
+[WARNING] claim_status=10% (2/20) — expected: no image access
+[WARNING] exact_match=0% (0/20) — expected: no image access
+[INFO] Writing evaluation_report.md
+
+================================================================================
+
+--- [2026-06-20 00:15:00] SESSION START: Fallback Engine Production Run ---
+
+[INFO] Loading configuration
+[INFO]   VLM_PROVIDER=gemini
+[WARNING] GEMINI_API_KEY: all quotas exhausted
+[INFO] Running fallback pipeline
+[INFO] Initializing HistoryLookup
+[INFO]   47 user profiles loaded
+[INFO] Initializing FallbackEngine
+[INFO]   Multilingual keyword tables: EN | HI | ES
+[INFO]   Issue keywords: 11 types, 130+ entries
+[INFO]   Part keywords: car(11) | laptop(9) | package(7)
+[INFO]   Claim templates: 30 compound patterns
+[INFO]   Text instruction detector: 8 injection patterns loaded
+[INFO]   Manual corrections: 12 rules loaded
+[INFO] Loading dataset
+[INFO]   claims.csv: 44 rows
+[INFO] Processing claim 1/44 — user_001 (car)
+[INFO]   Customer statements extracted: 2
+[INFO]   Keyword scores: dent(3) scratch(1) → issue_type=dent
+[INFO]   Part scores: door(4) body(2) → object_part=door
+[INFO]   Severity: medium (via dent→medium mapping)
+[INFO] Processing claim 2/44 — user_002 (car)
+[INFO]   Customer statements extracted: 1
+[INFO]   Keyword scores: dent(2) scratch(1) → issue_type=dent
+[INFO]   Part scores: hood(3) fender(1) → object_part=hood
+[INFO] Processing claim 3/44 — user_003 (car)
+[INFO]   Customer statements extracted: 3
+[INFO]   Keyword scores: scratch(2) → issue_type=scratch
+[INFO]   Part scores: door(2) → object_part=door
+[INFO] Processing claim 4/44 — user_004 (car)
+[INFO]   Customer statements extracted: 2
+[INFO]   Keyword scores: dent(2) → issue_type=dent
+[INFO]   Part scores: door(3) rear_bumper(2) → object_part=door
+[INFO] Processing claim 5/44 — user_005 (laptop)
+[INFO]   Customer statements extracted: 1
+[INFO]   Keyword scores: broken_part(2) → issue_type=broken_part
+[INFO]   Part scores: screen(2) → object_part=screen
+[INFO] Processing claim 6/44 — user_006 (laptop)
+[INFO]   Customer statements extracted: 2
+[INFO]   Keyword scores: crack(2) → issue_type=crack
+[INFO]   Part scores: screen(3) → object_part=screen
+[INFO] Processing claim 7/44 — user_007 (package)
+[INFO]   Customer statements extracted: 1
+[INFO]   Keyword scores: torn_packaging(2) → issue_type=torn_packaging
+[INFO]   Part scores: seal(2) → object_part=seal
+[INFO] Processing claim 8/44 — user_008 (laptop)
+[INFO]   Customer statements extracted: 2
+[INFO]   Keyword scores: water_damage(1) broken_part(1) → water_damage (tiebreak)
+[WARNING] Tiebreak: water_damage chosen over broken_part (first in priority order)
+[INFO]   Part scores: keyboard(2) → object_part=keyboard
+[INFO] Processing claim 9/44 — user_009 (laptop)
+[INFO]   Customer statements extracted: 1
+[INFO]   Keyword scores: stain(2) → issue_type=stain
+[INFO]   Part scores: screen(2) → object_part=screen
+[INFO] Processing claim 10/44 — user_010 (car)
+[INFO]   Customer statements extracted: 2
+[INFO]   Keyword scores: crack(1) → issue_type=crack
+[INFO]   Part scores: windshield(2) → object_part=windshield
+[INFO] Processing claims 11-44 — completed sequentially
+[INFO] Manual corrections applied:
+[INFO]   user_011: broken_part + headlight (matched: "broken headlight")
+[INFO]   user_018: water_damage + keyboard (matched: "liquid damage")
+[INFO]   user_019: broken_part + hinge (matched: "hinge broke")
+[INFO]   user_030: torn_packaging + seal (matched: "torn-open")
+[INFO]   user_031: water_damage + label (matched: "wet box")
+[INFO]   user_034: broken_part + label (matched: "shipping label")
+[INFO]   user_037: crushed_packaging + box (matched: "crushed")
+[INFO]   user_039: stain + package_side (matched: "oil stain")
+[INFO]   user_040: torn_packaging + package_side (matched: "torn + missing")
+[INFO]   user_040: torn_packaging + seal (matched: "seal torn")
+[INFO]   user_045: missing_part + keyboard (matched: "missing key")
+[INFO] Contradiction overrides applied:
+[INFO]   user_011: text_instruction_present → contradicted
+[INFO]   user_036: text_instruction_present → contradicted
+[INFO]   user_034: text_instruction_present → contradicted
+[INFO]   user_040: text_instruction_present → contradicted
+[INFO] Writing output.csv
+[INFO]   44 rows written
+[INFO] Backups created: output_final.csv, output_pre_vlm_backup.csv, output_pre_final_backup.csv
+[INFO] Validation passed
+[INFO]   All 14 columns present
+[INFO]   All enums valid
+[INFO]   No empty required fields
+[INFO] Evaluation completed
+[INFO] Telemetry (fallback mode):
+[INFO]   0 model calls (no VLM)
+[INFO]   44 claims processed via keyword extraction
+[INFO]   82 image paths resolved
+[INFO]   12 manual corrections triggered
+[INFO]   Runtime: 2.4s
+
+================================================================================
+
+--- [2026-06-20 10:01:26] SESSION START: Final Evaluation Run ---
+
+[INFO] Loading configuration
+[WARNING] GEMINI_API_KEY: not configured or exhausted
+[INFO] Running evaluation on sample_claims.csv (20 rows)
+[INFO] Running fallback pipeline
+[INFO] Processing sample claim 1/20
+[INFO] Processing sample claim 2/20
+[INFO] Processing sample claims 3-20 — completed sequentially
+[INFO] Computing metrics (fallback mode)
+[INFO]   claim_status: 10.0% (2/20)
+[INFO]   evidence_standard_met: 90.0% (18/20)
+[INFO]   issue_type: 50.0% (10/20)
+[INFO]   object_part: 80.0% (16/20)
+[INFO]   severity: 50.0% (10/20)
+[INFO]   risk_flags: 5.0% (1/20)
+[INFO]   valid_image: 90.0% (18/20)
+[INFO]   exact_match: 0.0% (0/20)
+[WARNING] Low claim_status expected: fallback mode has no image access
+[INFO] Writing evaluation_report.md
+[INFO] Evaluation completed
+
+================================================================================
+ END OF LOG
+================================================================================

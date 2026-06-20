@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "aistudio": {
+      "type": "local",
+      "command": ["npx", "-y", "aistudio-mcp-server"],
+      "enabled": true,
+      "env": {
+        "GEMINI_API_KEY": "${GEMINI_API_KEY}",
+        "GEMINI_MODEL": "gemini-2.5-flash",
+        "GEMINI_TIMEOUT": "600000",
+        "GEMINI_MAX_OUTPUT_TOKENS": "16384",
+        "GEMINI_MAX_FILES": "10",
+        "GEMINI_MAX_TOTAL_FILE_SIZE": "50",
+        "GEMINI_TEMPERATURE": "0.0"
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+# Core dependencies
+# VLM providers (install at least one):
+# anthropic>=0.45.0
+# openai>=1.0.0
+# google-genai>=1.0.0  # For Gemini
+#
+# Run: pip install anthropic openai google-genai
+#
+# The code gracefully falls back to mock mode if neither is installed
+# or if API keys are not configured.
